@@ -1,11 +1,13 @@
 import './App.css';
 import { Component } from 'react';
+import Film from './component/movies'
+import NavBar from './component/navbar/navbar'
 
 
 const API_KEY = '793525d8'
 const API_URL = 'http://www.omdbapi.com'
 
-function ricercaFilm(params = 'back to the past') {
+function ricercaFilm(params = 'back to the future') {
   return fetch(API_URL + '?apikey=' + API_KEY + '&s=' + params).then(res => res.json())
 }
 
@@ -19,22 +21,31 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    ricercaFilm().then(res => {
-      this.setState({
+  searchMovies = (term = '') => {
+    if(term.length < 3) {
+      return
+    }
+
+    ricercaFilm(term).then( res => {
+      this.setState( {
         film: res.Search
       })
-    });
+    })
+  }
+
+  componentDidMount() {
+    this.searchMovies("back to the future");
   }
 
   render() {
     return (
-      <div className="App">
-        <h1>MY MOVIES</h1>
-        <ul>
-          {this.state.film.map(film => <li key={film.imdbID}>{film.Title}</li>)}
-        </ul>
+      <>s
+      <NavBar onSearch={this.searchMovies} />
+      <div className="container">
+          <h1>FILM</h1>
+          <Film film={this.state.film}></Film>
       </div>
+      </>
     )
   }
 }
