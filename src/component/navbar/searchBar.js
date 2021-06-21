@@ -5,13 +5,17 @@ export default class SearchBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            term: 'La dolce vita'
+            term: ''
         }
     }
 
     searchChange = (event) => {
         this.setState({ term: event.target.value });
-        this.props.onSearch(event.target.value);
+    }
+
+    searchFilm = (evt) => {
+        evt.preventDefault();
+        this.props.onSearch(this.state.term);
     }
 
     render() {
@@ -21,7 +25,7 @@ export default class SearchBar extends Component {
                 value={this.state.term} placeholder="Search" 
                 onChange={this.searchChange}
                 aria-label="Search" />
-                <button className="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
+                <button onClick= {this.searchFilm} className="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
             </form>
         )
     }
